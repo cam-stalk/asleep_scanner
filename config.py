@@ -18,7 +18,7 @@ total = 0
 state = 0.0
 
 global_country = ''
-global_ports = ["37777"]
+global_ports = ["34567"]
 
 tmp_masscan_file = 'res_scan.txt'
 logins_file = 'logins.txt'
@@ -38,7 +38,7 @@ masscan_nix_path = 'masscan'
 # WRITE HERE MASSCAN ARGUMENTS
 
 def additional_masscan_params():
-	masscan_params = '--randomize-hosts -sS' # add interface here to avoid manual input
+	masscan_params = '--randomize-hosts -sS -e tun0' # add interface here to avoid manual input
 	if "-e" in masscan_params:
 		return masscan_params
 	else:
@@ -54,8 +54,8 @@ def additional_masscan_params():
 # SPECIFY HERE SPEED/QUALITY OF SCAN AND BRUTE
 default_masscan_threads = 3000
 #default_check_threads = 120
-default_brute_threads = 160
-default_snap_threads = 140
+default_brute_threads = 10
+default_snap_threads = 10
 default_image_threads = 60
 
 # SPECIFY HERE CAMERAS COUNT IN SMARTPSS XML
