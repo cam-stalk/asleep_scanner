@@ -57,44 +57,43 @@ def process_cameras():
 
     config.total = len(hosts)
 
-    try:
-        brute_queue = Queue()
-        screenshot_queue = Queue()
-        image_processing_queue = Queue()
+    # try:
+    brute_queue = Queue()
+    screenshot_queue = Queue()
+    image_processing_queue = Queue()
 
-        for _ in range(config.default_brute_threads):
-            brute_worker = BruteThread(brute_queue, screenshot_queue)
-            brute_worker.daemon = True
-            brute_worker.start()
+    for _ in range(config.default_brute_threads):
+        brute_worker = BruteThread(brute_queue, screenshot_queue)
+        brute_worker.daemon = True
+        brute_worker.start()
 
-        for _ in range(config.default_snap_threads):
-            screenshot_worker = ScreenshotThread(screenshot_queue, image_processing_queue)
-            screenshot_worker.daemon = True
-            screenshot_worker.start()
+    for _ in range(config.default_snap_threads):
+        screenshot_worker = ScreenshotThread(screenshot_queue, image_processing_queue)
+        screenshot_worker.daemon = True
+        screenshot_worker.start()
 
-        for _ in range(config.default_image_threads):
-            image_processing_worker = ImageProcessingThread(image_processing_queue)
-            image_processing_worker.daemon = True
-            image_processing_worker.start()
+    for _ in range(config.default_image_threads):
+        image_processing_worker = ImageProcessingThread(image_processing_queue)
+        image_processing_worker.daemon = True
+        image_processing_worker.start()
 
+    for host in hosts:
+        brute_queue.put(host, block=False, timeout=25)
+    print(f'\nStarting to brute total {str(brute_queue.qsize())} devices\n')
 
-        for host in hosts:
-            brute_queue.put(host, block=False, timeout=25)
-        print(f'\nStarting to brute total {str(brute_queue.qsize())} devices\n')
+    brute_queue.join()
+    screenshot_queue.join()
+    image_processing_queue.join()
+    # raise exception here
+    print('\n')
 
-        brute_queue.join()
-        screenshot_queue.join()
-        image_processing_queue.join()
-        # raise exception here
-        print('\n')
-
-    except Exception as e:
-        config.logging.error(e)
-        config.logging.info("Brute process interrupt!")
-        config.logging.debug(config.working_hosts)
-
-    config.logging.info(f'Results: {len(hosts)} devices found, {len(config.working_hosts)} bruted')
-    config.logging.info(f'Made total {config.snapshots_counts} snapshots')
+    # except Exception as e:
+    #     config.logging.error(e)
+    #     config.logging.info("Brute process interrupt!")
+    #     config.logging.debug(config.working_hosts)
+    #
+    # config.logging.info(f'Results: {len(hosts)} devices found, {len(config.working_hosts)} bruted')
+    # config.logging.info(f'Made total {config.snapshots_counts} snapshots')
 
 
 def masscan(filescan, threads, resume):

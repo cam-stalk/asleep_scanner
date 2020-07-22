@@ -71,11 +71,12 @@ def setup_credentials(use_custom_credentials):
 
         raw_creds = list(
             map(str.strip, open(config.logopass_file).readlines()))
-        for raw_cred in raw_creds:
-            login_pass = raw_cred.split(':')
-            if len(login_pass) == 2:
-                config.logins.append(login_pass[0])
-                config.passwords.append(login_pass[1])
+        # for raw_cred in raw_creds:
+        #     login_pass = raw_cred.split(':')
+        #     if len(login_pass) == 2:
+        #         config.logins.append(login_pass[0])
+        #         config.passwords.append(login_pass[1])
+        config.credentials = raw_creds
 
         logging.debug(f'Logins loaded: {", ".join(config.logins)}')
         logging.debug(f'Passwords loaded: {", ".join(config.passwords)}')

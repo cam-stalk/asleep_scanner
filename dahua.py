@@ -152,3 +152,6 @@ class DahuaController:
             data = data.replace(trash, b'')
         return data
 
+    def logout(self):
+        self._socket.close()
+

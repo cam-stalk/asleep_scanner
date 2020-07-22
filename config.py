@@ -4,6 +4,7 @@ import time
 
 logins = []
 passwords = []
+credentials = []
 top_logopass = {}
 working_hosts = []
 random_countries = []
@@ -18,7 +19,7 @@ total = 0
 state = 0.0
 
 global_country = ''
-global_ports = ["34567"]
+global_ports = ["37777"]
 
 tmp_masscan_file = 'res_scan.txt'
 logins_file = 'logins.txt'
@@ -54,7 +55,7 @@ def additional_masscan_params():
 # SPECIFY HERE SPEED/QUALITY OF SCAN AND BRUTE
 default_masscan_threads = 3000
 #default_check_threads = 120
-default_brute_threads = 10
+default_brute_threads = 100
 default_snap_threads = 10
 default_image_threads = 60
 
